@@ -1,0 +1,72 @@
+< HTML >
+Full form of html :  Hypertext Markup Language 
+
+Hypertext 
+
+==> Hypertext refers to text that contains links (called hyperlinks) to other texts or documents.
+==> Meaning users can jump from one document to another simply by clicking on hyperlinks.
+
+Markup
+
+Structure of Html:
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Document</title>
+	</head>
+	<body>
+
+	</body>
+</html>
+
+Doctype html:
+	it is used to declare the version of html as html15.
+Html:
+	it is the root element which contains the head section and body section.
+head:
+	it holds the meta data.
+						<audio>
+
+<AUDIO> TAG 
+The audio tag is used to embed sound content in a webpage, such as music or other audio files.
+
+ATTRIBUTES OF <AUDIO> TAG 
+- CONTROLS:
+  --> Displays audio controls like play, pause, and volume.
+-AUTOPLAY:
+  --> automatically starts playing the audio once it loads.
+-LOOPS:
+  --> Repeats the audio indefinitely.
+-MUTED:
+  --> Mutes the audio.
+
+						<video>
+<VIDEO> TAG
+the <video> tag is used to embed video content into a webpage.
+
+ATTRIBUTE OF <VIDEO> TAG 
+-CONTROLS:
+  --> Displays video controls like play, pause, volume, and full screen.
+-AUTOPLAY:
+  --> Automatically plays the video when the page loads.
+-LOOP:
+  -->Repeats the video indefinitely.
+-MUTED:
+  -->Mutes the video by default.
+-WIDTH AND HEIGHT:
+  --> Specifies the width and height of the video
+						<iframe>
+<IFRAME> TAG
+the <iframe> tag is used to embed another HTML document or external content into the current webpage.
+It is often used to embed videos, maps, or other websites.
+ATTRIBUTES OF <IFRAME> TAG
+-SRC:
+  -->specifies the URL of the embedded content.
+-WIDTH AND HEIGHT:
+  --> Defines the size of the embedded iframe.
+-FRAMEBORDER:
+  --> Defines whether the 
+
+
+
+

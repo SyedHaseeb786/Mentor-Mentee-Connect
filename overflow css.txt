@@ -1,0 +1,8 @@
+Equals method with out overriding 
+
+Purpose of overriding equals method 
+
+We override equals method to compare current object states with the passed object states
+
+
+

@@ -1,0 +1,15 @@
+datatype[][]variable = { 
+			{v1,v2,v3...},
+			{v1,v2,v3...},
+			{v1,v2,v3...},
+			.
+			.
+			.
+		      };
+ex: int[][]a = {
+		{10,20,30},
+		{40,50,60},
+		{70,80,90}
+	       };
+
+note: Declaration as well as initialisation of multidimensional array by using static way in two different lines not possible 

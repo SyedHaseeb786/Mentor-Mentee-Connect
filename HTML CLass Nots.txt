@@ -1,0 +1,14 @@
+Tag Name:
+--> To target the element based on tagname itself we have to use tagName selector.
+--> The symbol was the tagname itself.
+
+Universal:
+--> It will target all the document elements, including body tag.
+--> The symbol used is asterisk(*).
+
+Id Name:
+--> TO target the elements uniquely we have to use an id name.
+-->in css id name can be duplicated also ther is no problem.
+--> But once we moved to advanced languages, repetition of id
+name will not work. SO it is highly recommended not to use it from now on
+--> The symbol used is hash(#).

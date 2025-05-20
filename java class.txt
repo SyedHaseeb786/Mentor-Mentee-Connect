@@ -1,0 +1,53 @@
+What is derived typecasting?
+Non primitive type casting is called derived type casting. 
+
+Types of non primitive typecasting 
+What is upcasting? And what is the advantage?
+
+What is the disadvantage of Upcasting?
+What is a class cast exception?
+What is the use of an instance of operator?
+
+>Polymorphism is derived from the Greek origin where poly means many morphism means forms 
+
+>We can define polymorphism as the ability of an object to have members with the same name, but different forms are called polymorphism.
+
+>Based on the binding, we can classify polymorphism into two types, i.e. compile time polymorphism/static binding/ Early Binding/ Dynamic Binding/ Late Binding / Runtime Polymorphism 
+>If the binding is done by the compile at compile time for the polymorphism state program is called as compiletime polymorphism 
+>During Compile time polymorphism compiler can face 
+	. Method overloading
+	. Constructure Overloading
+	. Variable Shadowing
+	. Method Shadowing
+
+-->A class having method in same name but different formal arguments is called as method overloading 
+	ex:
+what is constructer overloading ?
+> A class having constructers with same name but different formal arguments is called as Constructer overloading.
+	ex: car()
+		{
+		
+		}
+> car(string name)
+	{
+	}
+Variable Shadowing :
+--------------------
+> IF the super class and the subclass having the variables with same name is called as variable shadowing 
+> Variable shadowing is applicable for both static and non static 
+> To achieve variable shadowing is a relation is mandatory 
+
+class A{
+static int x = 10;
+class b extends A {
+static int x = 20;
+}
+class c extends B {
+static int x = 30;
+psvm (String[]a){
+A ref = new B();
+B ref2 = new c();
+ c ref3 = new c ();
+System.out.println(x);
+System.out.println(ref1.x);
+s.o.p (refe.x)

@@ -1,0 +1,116 @@
+<?php
+session_start();
+if (!isset($_SESSION['email']) || $_SESSION['role'] != 'mentee') {
+    header("Location: index.php");
+    exit();
+}
+
+$success_message = '';
+$error_message = '';
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_assignment'])) {
+    $certificate_link = filter_var($_POST['certificate_link'], FILTER_SANITIZE_URL);
+    
+    if (filter_var($certificate_link, FILTER_VALIDATE_URL)) {
+        $success_message = "Certificate submitted successfully!";
+        // Here you would typically save to database
+    } else {
+        $error_message = "Please enter a valid URL for your certificate.";
+    }
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Certificate</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Use the same styles as your dashboard for consistency */
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: url('https://trafft.com/wp-content/uploads/2022/10/3818436-768x365.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: -1;
+        }
+        
+        .certificate-container {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .certificate-container h1 {
+            color: #ffffff;
+            margin-bottom: 20px;
+        }
+        
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            color: #ffffff;
+            text-decoration: none;
+        }
+        
+        .back-btn:hover {
+            text-decoration: underline;
+        }
+        
+        /* [Include all your existing form styles from the dashboard] */
+    </style>
+</head>
+<body>
+    <div class="certificate-container">
+        <h1>Submit Certificate</h1>
+        
+        <?php if (isset($success_message)): ?>
+            <div class="alert alert-success">
+                <?php echo htmlspecialchars($success_message); ?>
+            </div>
+        <?php endif; ?>
+        
+        <?php if (isset($error_message)): ?>
+            <div class="alert alert-error">
+                <?php echo htmlspecialchars($error_message); ?>
+            </div>
+        <?php endif; ?>
+        
+        <form method="POST" action="">
+            <div class="form-group">
+                <label for="certificate_link">Certificate URL:</label>
+                <input type="url" id="certificate_link" name="certificate_link" 
+                       required placeholder="https://example.com/certificate.pdf"
+                       class="form-control">
+            </div>
+            <button type="submit" name="submit_assignment" class="submit-btn">
+                Submit Certificate
+            </button>
+        </form>
+        
+        <a href="mentee_dashboard.php" class="back-btn">← Back to Dashboard</a>
+    </div>
+</body>
+</html>

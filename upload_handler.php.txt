@@ -1,0 +1,29 @@
+<?php
+session_start(); // Start the session
+if (!isset($_SESSION['email']) || $_SESSION['role'] != 'mentor') {
+    header("Location: index.php"); // Redirect to login if not logged in as a mentor
+    exit();
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_FILES['excelFile']) && $_FILES['excelFile']['error'] === UPLOAD_ERR_OK) {
+        $uploadDir = 'uploads/'; // Directory to store uploaded files
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0755, true); // Create the directory if it doesn't exist
+        }
+
+        $fileName = basename($_FILES['excelFile']['name']);
+        $uploadFilePath = $uploadDir . $fileName;
+
+        if (move_uploaded_file($_FILES['excelFile']['tmp_name'], $uploadFilePath)) {
+            echo json_encode(['status' => 'success', 'message' => 'File uploaded successfully!']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Failed to move uploaded file.']);
+        }
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'No file uploaded or file upload error.']);
+    }
+} else {
+    echo json_encode(['status' => 'error', 'message' => 'Invalid request method.']);
+}
+?>

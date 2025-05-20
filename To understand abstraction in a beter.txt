@@ -1,0 +1,20 @@
+To understand abstraction in a beteer way we need 
+
+1 service specifier
+2 service providers
+3 end user
+
+--> Service specifier
+	. A service specifier is one who will specify what help we can do for the end user 
+
+--> Service Provider 
+	. Service provider is one who will full fill the specifications done by the service specifier
+
+--> End User 
+	. End user is one who use 
+A Service specifier represent the abstraction part 
+any with abstact key wordand not having body is called as abstract method 
+
+if you having abstract present or inheritent, you should prefix the class with the abstract keyword 
+
+Habuibulla 

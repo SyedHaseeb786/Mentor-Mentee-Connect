@@ -1,0 +1,2211 @@
+My project name is "Mentor-Mentee connect"                                                                                   FILE NAME: connect.php<?php
+
+$host = "localhost";
+
+$user = "root";
+
+$pass = "";
+
+$db = "login";
+
+$conn = new mysqli($host, $user, $pass, $db);
+
+
+
+if ($conn->connect_error) {
+
+    die("Failed to connect DB: " . $conn->connect_error);
+
+}
+
+?>// File name:homepage.php <?php
+
+session_start();
+
+include("connect.php");
+
+
+
+?>
+
+
+
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Homepage</title>
+
+</head>
+
+<body>
+
+    <div style="text-align:center; padding:15%;">
+
+      <p  style="font-size:50px; font-weight:bold;">
+
+       Hello  <?php 
+
+       if(isset($_SESSION['email'])){
+
+        $email=$_SESSION['email'];
+
+        $query=mysqli_query($conn, "SELECT users.* FROM `users` WHERE users.email='$email'");
+
+        while($row=mysqli_fetch_array($query)){
+
+            echo $row['firstName'].' '.$row['lastName'];
+
+        }
+
+       }
+
+       ?>
+
+       :)
+
+      </p>
+
+      <a href="logout.php">Logout</a>
+
+    </div>
+
+</body>
+
+</html>// File name: index.php<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Register & Login</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        /* Clear background image */
+
+        body {
+
+            margin: 0;
+
+            padding: 0;
+
+            font-family: "Poppins", sans-serif;
+
+            background: url('https://eteia.agh.edu.pl/lib/kx7qnd/fullhd-illustration-1-l7vu3mg1.png') no-repeat center center fixed; /* Add your image path here */
+
+            background-size: cover;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            min-height: 100vh;
+
+        }
+
+
+
+        /* Container for the forms */
+
+        .container {
+
+            background: rgba(255, 255, 255, 0.95); /* More opaque white background */
+
+            padding: 2rem;
+
+            border-radius: 15px;
+
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Softer shadow */
+
+            border: 1px solid rgba(0, 0, 0, 0.1); /* Subtle border */
+
+            width: 450px;
+
+            text-align: center;
+
+        }
+
+
+
+        /* RGB gradient (white to sky blue) for the Sign In card with border style */
+
+        #signIn {
+
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(135, 206, 235, 0.95)); /* White to sky blue gradient */
+
+            border: 2px solid rgba(105, 176, 205, 0.8); /* Solid border with sky blue color */
+
+            border-radius: 15px; /* Rounded corners */
+
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+
+        }
+
+
+
+        /* Form title */
+
+        .form-title {
+
+            font-size: 1.5rem;
+
+            font-weight: bold;
+
+            margin-bottom: 0.4rem;
+
+        }
+
+
+
+        /* Input group styling */
+
+        .input-group {
+
+            position: relative;
+
+            margin: 1rem 0;
+
+        }
+
+
+
+        .input-group i {
+
+            position: absolute;
+
+            left: 10px;
+
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            color: black;
+
+        }
+
+
+
+        .input-group input {
+
+            width: 100%;
+
+            padding: 10px 10px 10px 35px;
+
+            border: none;
+
+            border-bottom: 1px solid #757575;
+
+            background-color: transparent;
+
+            font-size: 15px;
+
+        }
+
+
+
+        .input-group input:focus {
+
+            outline: none;
+
+            border-bottom: 2px solid hsl(327, 90%, 28%);
+
+        }
+
+
+
+        .input-group input::placeholder {
+
+            color: transparent;
+
+        }
+
+
+
+        .input-group label {
+
+            position: absolute;
+
+            left: 35px;
+
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            color: #757575;
+
+            transition: 0.3s ease all;
+
+            pointer-events: none;
+
+        }
+
+
+
+        .input-group input:focus ~ label,
+
+        .input-group input:not(:placeholder-shown) ~ label {
+
+            top: -10px;
+
+            font-size: 12px;
+
+            color: hsl(327, 90%, 28%);
+
+        }
+
+
+
+        /* Button styling */
+
+        .btn {
+
+            width: 100%;
+
+            padding: 10px;
+
+            border: none;
+
+            border-radius: 5px;
+
+            background-color: rgb(125, 125, 235);
+
+            color: white;
+
+            font-size: 1.1rem;
+
+            cursor: pointer;
+
+            transition: background-color 0.9s;
+
+        }
+
+
+
+        .btn:hover {
+
+            background-color: #07001f;
+
+        }
+
+
+
+        /* Links and icons */
+
+        .or {
+
+            margin: 1rem 0;
+
+            font-size: 1.1rem;
+
+        }
+
+
+
+        .icons {
+
+            margin: 1rem 0;
+
+        }
+
+
+
+        .icons i {
+
+            color: rgb(125, 125, 235);
+
+            font-size: 1.5rem;
+
+            margin: 0 15px;
+
+            cursor: pointer;
+
+            transition: color 0.3s;
+
+        }
+
+
+
+        .icons i:hover {
+
+            color: #07001f;
+
+        }
+
+
+
+        .links {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            margin-top: 0.9rem;
+
+        }
+
+
+
+        .links button {
+
+            background: none;
+
+            border: none;
+
+            color: rgb(125, 125, 235);
+
+            font-size: 1rem;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+        }
+
+
+
+        .links button:hover {
+
+            text-decoration: underline;
+
+            color: blue;
+
+        }
+
+
+
+        /* Hide/show forms */
+
+        #signup {
+
+            display: none;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container" id="signup">
+
+        <h1 class="form-title">Register</h1>
+
+        <form method="post" action="register.php">
+
+            <div class="input-group">
+
+                <i class="fas fa-user"></i>
+
+                <input type="text" name="fName" id="fName" placeholder="First Name" required>
+
+                <label for="fName">First Name</label>
+
+            </div>
+
+            <div class="input-group">
+
+                <i class="fas fa-user"></i>
+
+                <input type="text" name="lName" id="lName" placeholder="Last Name" required>
+
+                <label for="lName">Last Name</label>
+
+            </div>
+
+            <div class="input-group">
+
+                <i class="fas fa-envelope"></i>
+
+                <input type="email" name="email" id="email" placeholder="Email" required>
+
+                <label for="email">Email</label>
+
+            </div>
+
+            <div class="input-group">
+
+                <i class="fas fa-lock"></i>
+
+                <input type="password" name="password" id="password" placeholder="Password" required>
+
+                <label for="password">Password</label>
+
+            </div>
+
+            <div class="input-group">
+
+                <i class="fas fa-user-tag"></i>
+
+                <select name="role" id="role" required>
+
+                    <option value="">Select Role</option>
+
+                    <option value="mentor">Mentor</option>
+
+                    <option value="mentee">Mentee</option>
+
+                </select>
+
+                <label for="role">Role</label>
+
+            </div>
+
+            <input type="submit" class="btn" value="Sign Up" name="signUp">
+
+        </form>
+
+        <p class="or">----------or--------</p>
+
+        <div class="icons">
+
+            <i class="fab fa-google"></i>
+
+            <i class="fab fa-facebook"></i>
+
+        </div>
+
+        <div class="links">
+
+            <p>Already Have Account?</p>
+
+            <button id="signInButton">Sign In</button>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="container" id="signIn">
+
+        <h1 class="form-title">Sign In</h1>
+
+        <form method="post" action="register.php">
+
+            <div class="input-group">
+
+                <i class="fas fa-envelope"></i>
+
+                <input type="email" name="email" id="email" placeholder="Email" required>
+
+                <label for="email">Email</label>
+
+            </div>
+
+            <div class="input-group">
+
+                <i class="fas fa-lock"></i>
+
+                <input type="password" name="password" id="password" placeholder="Password" required>
+
+                <label for="password">Password</label>
+
+            </div>
+
+            <p class="recover"><a href="#">Recover Password</a></p>
+
+            <input type="submit" class="btn" value="Sign In" name="signIn">
+
+        </form>
+
+        <p class="or">----------or--------</p>
+
+        <div class="icons">
+
+            <i class="fab fa-google"></i>
+
+            <i class="fab fa-facebook"></i>
+
+        </div>
+
+        <div class="links">
+
+            <p>Don't have an account yet?</p>
+
+            <button id="signUpButton">Sign Up</button>
+
+        </div>
+
+    </div>
+
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>// File name:logout.php <?php
+
+session_start();
+
+session_destroy();
+
+header("Location: index.php");
+
+?>// File name: menteeDashboard.php <?php
+
+session_start(); // Start the session
+
+if (!isset($_SESSION['email']) || $_SESSION['role'] != 'mentee') {
+
+    header("Location: index.php"); // Redirect to login if not logged in as a mentee
+
+    exit();
+
+}
+
+?>
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mentee Dashboard</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+
+        /* Background image with overlay */
+
+        body {
+
+            font-family: sans-serif;
+
+            margin: 0;
+
+            padding: 0;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            min-height: 100vh;
+
+            background: url('https://trafft.com/wp-content/uploads/2022/10/3818436-768x365.jpg') no-repeat center center fixed; /* Add your image path here */
+
+            background-size: cover;
+
+        }
+
+
+
+        /* Overlay to make text readable */
+
+        body::before {
+
+            content: '';
+
+            position: absolute;
+
+            top: 0;
+
+            left: 0;
+
+            right: 0;
+
+            bottom: 0;
+
+            background: rgba(0, 0, 0, 0.3); /* Dark overlay for better contrast */
+
+            z-index: -1;
+
+        }
+
+
+
+        /* Dashboard container */
+
+        .dashboard-container {
+
+            background: rgba(255, 255, 255, 0.2); /* Semi-transparent white background */
+
+            padding: 30px;
+
+            border-radius: 15px;
+
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+
+            width: 90%;
+
+            max-width: 600px;
+
+            text-align: center;
+
+            backdrop-filter: blur(10px); /* Blur effect for modern look */
+
+            border: 1px solid rgba(255, 255, 255, 0.3); /* Light border */
+
+        }
+
+
+
+        .dashboard-container h1 {
+
+            color: #ffffff; /* White text for better contrast */
+
+            margin-bottom: 30px;
+
+            font-weight: bold;
+
+            font-size: 2.5rem;
+
+        }
+
+
+
+        .dashboard-container p {
+
+            color: #e0e0e0; /* Light gray text */
+
+            font-size: 1.1rem;
+
+            margin-bottom: 30px;
+
+        }
+
+
+
+        /* Cards styling */
+
+        .cards {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 20px;
+
+        }
+
+
+
+        .card {
+
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(173, 216, 230, 0.9)); /* White to sky blue gradient */
+
+            padding: 25px;
+
+            border-radius: 10px;
+
+            cursor: pointer;
+
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+            text-align: left;
+
+            border: 1px solid rgba(173, 216, 230, 0.5); /* Sky blue border */
+
+        }
+
+
+
+        .card:hover {
+
+            transform: translateY(-5px);
+
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+
+        }
+
+
+
+        .card h2 {
+
+            color: #1b5e20; /* Dark green for contrast */
+
+            margin-bottom: 10px;
+
+            font-size: 1.5rem;
+
+        }
+
+
+
+        .card p {
+
+            color: #495057; /* Dark gray for readability */
+
+            margin: 0;
+
+            font-size: 1rem;
+
+        }
+
+
+
+        /* Logout link styling */
+
+        .logout-link {
+
+            margin-top: 20px;
+
+            display: inline-block;
+
+            color: #ffffff; /* White text */
+
+            text-decoration: none;
+
+            font-size: 1rem;
+
+            transition: color 0.3s ease;
+
+        }
+
+
+
+        .logout-link:hover {
+
+            color: #cccccc; /* Light gray on hover */
+
+            text-decoration: underline;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="dashboard-container">
+
+        <h1>Welcome, Mentee</h1>
+
+        <p>You are logged in as <?php echo $_SESSION['email']; ?>.</p>
+
+        <div class="cards">
+
+            <div class="card" onclick="navigateTo('view_progress.php')">
+
+                <h2>View Progress</h2>
+
+                <p>Check your marks and attendance.</p>
+
+            </div>
+
+            <div class="card" onclick="navigateTo('view_announcements.php')">
+
+                <h2>View Announcements</h2>
+
+                <p>See announcements and meeting links.</p>
+
+            </div>
+
+            <div class="card" onclick="navigateTo('contact_mentor.php')">
+
+                <h2>Contact Mentor</h2>
+
+                <p>Send a message to your mentor.</p>
+
+            </div>
+
+            <div class="card" onclick="navigateTo('menteeGoogleMeetLink.php')">
+
+                <h2>Parent Meeting Announcement</h2>
+
+                <p>View parent meeting details.</p>
+
+            </div>
+
+        </div>
+
+        <a href="logout.php" class="logout-link">Logout</a>
+
+    </div>
+
+
+
+    <script>
+
+        function navigateTo(page) {
+
+            window.location.href = page; // Navigate to the specified page
+
+        }
+
+    </script>
+
+</body>
+
+</html> // File name: mentor.php <?php
+
+session_start(); // Start the session
+
+if (!isset($_SESSION['email']) || $_SESSION['role'] != 'mentor') {
+
+    header("Location: index.php"); // Redirect to login if not logged in as a mentor
+
+    exit();
+
+}
+
+?>
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mentor Dashboard</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+
+        /* Custom CSS for light RGB colors and organized layout */
+
+        body {
+
+            font-family: 'Arial', sans-serif;
+
+            background: linear-gradient(135deg, rgba(240, 244, 248, 0.9), rgba(227, 233, 242, 0.9)), 
+
+                        url('https://www.chieflearningofficer.com/wp-content/uploads/2023/01/AdobeStock_422946225.jpeg'); /* Add your background image */
+
+            background-size: cover;
+
+            background-position: center;
+
+            margin: 0;
+
+            padding: 0;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            min-height: 100vh;
+
+        }
+
+
+
+        .dashboard-container {
+
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+
+            padding: 30px;
+
+            border-radius: 12px;
+
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+            width: 90%;
+
+            max-width: 1000px;
+
+            text-align: center;
+
+        }
+
+
+
+        .dashboard-container h1 {
+
+            margin-bottom: 30px;
+
+            color: #2c3e50; /* Dark blue-gray for heading */
+
+            font-size: 2.5rem;
+
+            font-weight: 600;
+
+        }
+
+
+
+        .cards {
+
+            display: grid;
+
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive grid layout */
+
+            gap: 20px;
+
+            margin-bottom: 30px;
+
+        }
+
+
+
+        .card {
+
+            background-color: #ffffff;
+
+            padding: 20px;
+
+            border-radius: 10px;
+
+            cursor: pointer;
+
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+            border: 1px solid #e0e0e0; /* Light border for cards */
+
+        }
+
+
+
+        .card:hover {
+
+            transform: translateY(-5px);
+
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+
+        }
+
+
+
+        .card h2 {
+
+            margin-bottom: 15px;
+
+            color: #2575fc; /* Blue for card headings */
+
+            font-size: 1.5rem;
+
+            font-weight: 600;
+
+        }
+
+
+
+        .card p {
+
+            color: #555; /* Gray for card text */
+
+            font-size: 1rem;
+
+            line-height: 1.5;
+
+        }
+
+
+
+        .additional-buttons {
+
+            display: flex;
+
+            justify-content: center;
+
+            gap: 15px;
+
+            margin-top: 20px;
+
+        }
+
+
+
+        .additional-buttons button {
+
+            padding: 10px 20px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            background-color: #2575fc; /* Blue for buttons */
+
+            color: white;
+
+            font-size: 1rem;
+
+            font-weight: 500;
+
+            transition: background-color 0.3s ease, transform 0.3s ease;
+
+        }
+
+
+
+        .additional-buttons button:hover {
+
+            background-color: #1a5bbf; /* Darker blue on hover */
+
+            transform: translateY(-2px);
+
+        }
+
+
+
+        .additional-buttons button:active {
+
+            transform: translateY(0);
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="dashboard-container">
+
+        <h1>Welcome, Mentor</h1>
+
+        <p>You are logged in as <?php echo $_SESSION['email']; ?>.</p>
+
+        <div class="cards">
+
+            <div class="card" onclick="navigateTo('upload_marks.php')">
+
+                <h2>Upload Marks</h2>
+
+                <p>Upload student marks via Excel.</p>
+
+            </div>
+
+            <div class="card" onclick="navigateTo('track_progress.php')">
+
+                <h2>Track Progress</h2>
+
+                <p>View mentee progress and attendance.</p>
+
+            </div>
+
+            <div class="card" onclick="navigateTo('post_announcement.php')">
+
+                <h2>Post Announcement</h2>
+
+                <p>Post announcements and meeting links.</p>
+
+            </div>
+
+            <div class="card" onclick="navigateTo('parentsMeeting.php')">
+
+                <h2>Parents Meeting</h2>
+
+                <p>Schedule and manage parents' meetings.</p>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="additional-buttons">
+
+            <button onclick="navigateTo('view_reports.php')">View Reports</button>
+
+            <button onclick="navigateTo('manage_mentees.php')">Manage Mentees</button>
+
+        </div>
+
+        <a href="logout.php" style="margin-top: 20px; display: inline-block; color: #2575fc; text-decoration: none;">Logout</a>
+
+    </div>
+
+
+
+    <script>
+
+        function navigateTo(page) {
+
+            window.location.href = page; // Navigate to the specified page
+
+        }
+
+    </script>
+
+</body>
+
+</html>// File name: parentsMeeting.php <?php
+
+session_start(); // Start the session
+
+if (!isset($_SESSION['email']) || $_SESSION['role'] != 'mentor') {
+
+    header("Location: index.php"); // Redirect to login if not logged in as a mentor
+
+    exit();
+
+}
+
+?>
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Parents Meeting (Mentor)</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+
+        body {
+
+            font-family: sans-serif;
+
+            background-color: #f4f4f4;
+
+            margin: 0;
+
+            padding: 0;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            min-height: 100vh;
+
+        }
+
+
+
+        .meeting-container {
+
+            background-color: white;
+
+            padding: 20px;
+
+            border-radius: 8px;
+
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+            width: 80%;
+
+            max-width: 600px;
+
+            text-align: center;
+
+        }
+
+
+
+        .meeting-container h1 {
+
+            margin-bottom: 20px;
+
+            color: #333;
+
+        }
+
+
+
+        .form-group {
+
+            margin-bottom: 15px;
+
+            text-align: left;
+
+        }
+
+
+
+        .form-group label {
+
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #555;
+
+        }
+
+
+
+        .form-group input,
+
+        .form-group textarea {
+
+            width: 100%;
+
+            padding: 10px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 5px;
+
+            font-size: 16px;
+
+        }
+
+
+
+        .form-group textarea {
+
+            resize: vertical;
+
+            height: 100px;
+
+        }
+
+
+
+        .submit-button {
+
+            padding: 10px 20px;
+
+            border: none;
+
+            border-radius: 5px;
+
+            cursor: pointer;
+
+            background-color: #00838f;
+
+            color: white;
+
+            font-size: 16px;
+
+            transition: background-color 0.3s ease;
+
+        }
+
+
+
+        .submit-button:hover {
+
+            background-color: #006064;
+
+        }
+
+
+
+        .meet-link {
+
+            margin-top: 20px;
+
+            font-size: 18px;
+
+            color: #00838f;
+
+            word-break: break-all;
+
+        }
+
+
+
+        .meet-link a {
+
+            color: #00838f;
+
+            text-decoration: none;
+
+        }
+
+
+
+        .meet-link a:hover {
+
+            text-decoration: underline;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="meeting-container">
+
+        <h1>Schedule Parents Meeting (Mentor)</h1>
+
+        <form id="meetingForm">
+
+            <div class="form-group">
+
+                <label for="meetingDate">Meeting Date</label>
+
+                <input type="date" id="meetingDate" name="meetingDate" required>
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="meetingTime">Meeting Time</label>
+
+                <input type="time" id="meetingTime" name="meetingTime" required>
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="googleMeetLink">Google Meet Link</label>
+
+                <input type="url" id="googleMeetLink" name="googleMeetLink" placeholder="https://meet.google.com/xxx-yyyy-zzz" required>
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="additionalNotes">Additional Notes</label>
+
+                <textarea id="additionalNotes" name="additionalNotes" placeholder="Add any additional notes for the meeting..."></textarea>
+
+            </div>
+
+            <button type="submit" class="submit-button">Schedule Meeting</button>
+
+        </form>
+
+
+
+        <div id="meetLinkDisplay" class="meet-link" style="display: none;">
+
+            <p>Meeting Scheduled! Share this link with parents:</p>
+
+            <a id="meetLink" target="_blank"></a>
+
+        </div>
+
+    </div>
+
+
+
+    <script>
+
+        document.getElementById('meetingForm').addEventListener('submit', function (event) {
+
+            event.preventDefault();
+
+
+
+            const meetingDate = document.getElementById('meetingDate').value;
+
+            const meetingTime = document.getElementById('meetingTime').value;
+
+            const googleMeetLink = document.getElementById('googleMeetLink').value;
+
+            const additionalNotes = document.getElementById('additionalNotes').value;
+
+
+
+            const meetLinkDisplay = document.getElementById('meetLinkDisplay');
+
+            const meetLink = document.getElementById('meetLink');
+
+            meetLink.href = googleMeetLink;
+
+            meetLink.textContent = googleMeetLink;
+
+            meetLinkDisplay.style.display = 'block';
+
+
+
+            const meetingDetails = {
+
+                date: meetingDate,
+
+                time: meetingTime,
+
+                link: googleMeetLink,
+
+                notes: additionalNotes
+
+            };
+
+            localStorage.setItem('meetingDetails', JSON.stringify(meetingDetails));
+
+            console.log('Meeting Details:', meetingDetails);
+
+
+
+            document.getElementById('meetingForm').reset();
+
+        });
+
+    </script>
+
+</body>
+
+</html> // File name: post_announcement.php <?php
+
+session_start(); // Start the session
+
+if (!isset($_SESSION['email']) || $_SESSION['role'] != 'mentor') {
+
+    header("Location: index.php"); // Redirect to login if not logged in as a mentor
+
+    exit();
+
+}
+
+?>
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Post Announcement (Mentor)</title>
+
+    <style>
+
+        body {
+
+            font-family: sans-serif;
+
+            background-color: #f4f4f4;
+
+            margin: 0;
+
+            padding: 20px;
+
+        }
+
+
+
+        .container {
+
+            max-width: 600px;
+
+            margin: 0 auto;
+
+            background-color: white;
+
+            padding: 20px;
+
+            border-radius: 8px;
+
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+        }
+
+
+
+        h1 {
+
+            text-align: center;
+
+            margin-bottom: 20px;
+
+            color: #333;
+
+        }
+
+
+
+        #announcement-form {
+
+            display: flex;
+
+            flex-direction: column;
+
+        }
+
+
+
+        #announcement-input {
+
+            padding: 10px;
+
+            margin-bottom: 10px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 5px;
+
+            resize: vertical;
+
+        }
+
+
+
+        #announcement-form button {
+
+            padding: 10px 20px;
+
+            background-color: #28a745;
+
+            color: white;
+
+            border: none;
+
+            border-radius: 5px;
+
+            cursor: pointer;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Post Announcement (Mentor)</h1>
+
+        <form id="announcement-form">
+
+            <textarea id="announcement-input" placeholder="Enter announcement text"></textarea>
+
+            <button type="submit">Post Announcement</button>
+
+        </form>
+
+    </div>
+
+
+
+    <script>
+
+        document.getElementById('announcement-form').addEventListener('submit', function (event) {
+
+            event.preventDefault();
+
+
+
+            const announcementInput = document.getElementById('announcement-input');
+
+            const announcementText = announcementInput.value.trim();
+
+
+
+            if (announcementText) {
+
+                let announcements = JSON.parse(localStorage.getItem('announcements')) || [];
+
+                announcements.push(announcementText);
+
+                localStorage.setItem('announcements', JSON.stringify(announcements));
+
+
+
+                announcementInput.value = '';
+
+                alert('Announcement posted successfully!');
+
+            }
+
+        });
+
+    </script>
+
+</body>
+
+</html>// File name: register.php <?php
+
+session_start(); // Start the session
+
+include 'connect.php';
+
+
+
+// Handle Registration
+
+if (isset($_POST['signUp'])) {
+
+    $firstName = $_POST['fName'];
+
+    $lastName = $_POST['lName'];
+
+    $email = $_POST['email'];
+
+    $password = md5($_POST['password']);
+
+    $role = $_POST['role'];
+
+
+
+    $checkEmail = "SELECT * FROM users WHERE email='$email'";
+
+    $result = $conn->query($checkEmail);
+
+    if ($result->num_rows > 0) {
+
+        echo "Email Address Already Exists!";
+
+    } else {
+
+        $insertQuery = "INSERT INTO users (firstName, lastName, email, password, role)
+
+                        VALUES ('$firstName', '$lastName', '$email', '$password', '$role')";
+
+        if ($conn->query($insertQuery)) {
+
+            header("Location: index.php");
+
+            exit();
+
+        } else {
+
+            echo "Error: " . $conn->error;
+
+        }
+
+    }
+
+}
+
+
+
+// Handle Login
+
+if (isset($_POST['signIn'])) {
+
+    $email = $_POST['email'];
+
+    $password = md5($_POST['password']);
+
+
+
+    $sql = "SELECT * FROM users WHERE email='$email' AND password='$password'";
+
+    $result = $conn->query($sql);
+
+
+
+    if ($result->num_rows > 0) {
+
+        $row = $result->fetch_assoc();
+
+        $_SESSION['email'] = $row['email'];
+
+        $_SESSION['role'] = $row['role'];
+
+
+
+        // Redirect based on role
+
+        if ($_SESSION['role'] == 'mentor') {
+
+            echo "Redirecting to mentor dashboard...";
+
+            header("Location: mentor.php"); // Ensure this path is correct
+
+            exit();
+
+        } elseif ($_SESSION['role'] == 'mentee') {
+
+            header("Location: menteeDashboard.php"); // Update this to the correct file name
+
+            exit();
+
+        }
+
+    } else {
+
+        echo "Not Found, Incorrect Email or Password";
+
+    }
+
+}
+
+?>// File name: script.js const signUpButton = document.getElementById('signUpButton');
+
+const signInButton = document.getElementById('signInButton');
+
+const signInForm = document.getElementById('signIn');
+
+const signUpForm = document.getElementById('signup');
+
+
+
+signUpButton.addEventListener('click', function () {
+
+    signInForm.style.display = "none";
+
+    signUpForm.style.display = "block";
+
+});
+
+
+
+signInButton.addEventListener('click', function () {
+
+    signInForm.style.display = "block";
+
+    signUpForm.style.display = "none";
+
+}); // File name: style.css *{
+
+    margin:0;
+
+    padding:0;
+
+    box-sizing:border-box;
+
+    font-family:"poppins",sans-serif;
+
+}
+
+body{
+
+    background-color: #c9d6ff;
+
+    background:linear-gradient(to right,#e2e2e2,#c9d6ff);
+
+}
+
+.container{
+
+    background:#fff;
+
+    width:450px;
+
+    padding:1.5rem;
+
+    margin:50px auto;
+
+    border-radius:10px;
+
+    box-shadow:0 20px 35px rgba(0,0,1,0.9);
+
+}
+
+form{
+
+    margin:0 2rem;
+
+}
+
+.form-title{
+
+    font-size:1.5rem;
+
+    font-weight:bold;
+
+    text-align:center;
+
+    padding:1.3rem;
+
+    margin-bottom:0.4rem;
+
+}
+
+input{
+
+    color:inherit;
+
+    width:100%;
+
+    background-color:transparent;
+
+    border:none;
+
+    border-bottom:1px solid #757575;
+
+    padding-left:1.5rem;
+
+    font-size:15px;
+
+}
+
+.input-group{
+
+    padding:1% 0;
+
+    position:relative;
+
+
+
+}
+
+.input-group i{
+
+    position:absolute;
+
+    color:black;
+
+}
+
+input:focus{
+
+    background-color: transparent;
+
+    outline:transparent;
+
+    border-bottom:2px solid hsl(327,90%,28%);
+
+}
+
+input::placeholder{
+
+    color:transparent;
+
+}
+
+label{
+
+    color:#757575;
+
+    position:relative;
+
+    left:1.2em;
+
+    top:-1.3em;
+
+    cursor:auto;
+
+    transition:0.3s ease all;
+
+}
+
+input:focus~label,input:not(:placeholder-shown)~label{
+
+    top:-3em;
+
+    color:hsl(327,90%,28%);
+
+    font-size:15px;
+
+}
+
+.recover{
+
+    text-align:right;
+
+    font-size:1rem;
+
+    margin-bottom:1rem;
+
+
+
+}
+
+.recover a{
+
+    text-decoration:none;
+
+    color:rgb(125,125,235);
+
+}
+
+.recover a:hover{
+
+    color:blue;
+
+    text-decoration:underline;
+
+}
+
+.btn{
+
+    font-size:1.1rem;
+
+    padding:8px 0;
+
+    border-radius:5px;
+
+    outline:none;
+
+    border:none;
+
+    width:100%;
+
+    background:rgb(125,125,235);
+
+    color:white;
+
+    cursor:pointer;
+
+    transition:0.9s;
+
+}
+
+.btn:hover{
+
+    background:#07001f;
+
+}
+
+.or{
+
+    font-size:1.1rem;
+
+    margin-top:0.5rem;
+
+    text-align:center;
+
+}
+
+.icons{
+
+    text-align:center;
+
+}
+
+.icons i{
+
+    color:rgb(125,125,235);
+
+    padding:0.8rem 1.5rem;
+
+    border-radius:10px;
+
+    font-size:1.5rem;
+
+    cursor:pointer;
+
+    border:2px solid #dfe9f5;
+
+    margin:0 15px;
+
+    transition:1s;
+
+}
+
+.icons i:hover{
+
+    background:#07001f;
+
+    font-size:1.6rem;
+
+    border:2px solid rgb(125,125,235);
+
+}
+
+.links{
+
+    display:flex;
+
+    justify-content:space-around;
+
+    padding:0 4rem;
+
+    margin-top:0.9rem;
+
+    font-weight:bold;
+
+}
+
+button{
+
+    color:rgb(125,125,235);
+
+    border:none;
+
+    background-color:transparent;
+
+    font-size:1rem;
+
+    font-weight:bold;
+
+}
+
+button:hover{
+
+    text-decoration:underline;
+
+    color:blue;
+
+} File name : track_progress.php <?php
+
+session_start(); // Start the session
+
+if (!isset($_SESSION['email']) || $_SESSION['role'] != 'mentor') {
+
+    header("Location: index.php"); // Redirect to login if not logged in as a mentor
+
+    exit();
+
+}
+
+?>
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Track Progress</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <div class="container mt-5">
+
+        <h1>Track Mentee Progress</h1>
+
+        <p>View mentee progress and attendance here.</p>
+
+        <table class="table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Mentee</th>
+
+                    <th>Progress</th>
+
+                    <th>Attendance</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+
+                    <td>Haseeb</td>
+
+                    <td>80%</td>
+
+                    <td>90%</td>
+
+                </tr>
+
+                <tr>
+
+                    <td>Venkatesh</td>
+
+                    <td>70%</td>
+
+                    <td>85%</td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</body>
+
+</html> // File name: upload_marks.php <?php
+
+session_start(); // Start the session
+
+if (!isset($_SESSION['email']) || $_SESSION['role'] != 'mentor') {
+
+    header("Location: index.php"); // Redirect to login if not logged in as a mentor
+
+    exit();
+
+}
+
+?>
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Track Progress</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <div class="container mt-5">
+
+        <h1>Track Mentee Progress</h1>
+
+        <p>View mentee progress and attendance here.</p>
+
+        <table class="table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Mentee</th>
+
+                    <th>Progress</th>
+
+                    <th>Attendance</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+
+                    <td>Haseeb</td>
+
+                    <td>80%</td>
+
+                    <td>90%</td>
+
+                </tr>
+
+                <tr>
+
+                    <td>Venkatesh</td>
+
+                    <td>70%</td>
+
+                    <td>85%</td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</body>
